@@ -1,0 +1,44 @@
+header file added
+
+
+this is a variable
+
+this is a constant variable
+
+assigning a value with or without arithmetic operation
+assigning a value with or without arithmetic operation
+assigning a value with or without arithmetic operation
+assigning a value with or without arithmetic operation
+assigning a value with or without arithmetic operation
+result is absolute value of this arithmetic operation
+
+incrementing/decrementing a variable
+
+this is a function
+
+
+this is a for loop
+
+this is a for loop
+
+this is a for loop
+
+
+this is a while loop
+
+this is a while loop
+
+
+this is an if else ladder
+
+
+enter a value from user
+  singleline comment.the comment is:input taken from user
+show the value of variable
+ multiline comment.the comment is:this prints value 
+            of x      
+
+this is switch case ladder
+
+
+declaration of a class
