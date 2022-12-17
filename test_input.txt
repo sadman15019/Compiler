@@ -48,5 +48,13 @@ cholok integer arr[100];
 arr[3]<-56;
 display(a,b,abc);
 
+func sum -> fraction (integer x,fraction y)
+{
+   range e;
+}
+
+cholok fraction xx;
+a<-sum(a,e);  ##this is a function call
+
 
 

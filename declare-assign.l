@@ -37,7 +37,11 @@
 "as_long_as"  {return WHILE;} 
 "["           {return *yytext;}
 "]"           {return *yytext;}
-
+"func"        {return FUNC;}
+"->"         {return FUNCRET;}
+"range"      {return RET;}
+"void"        {return VOID;}
+[#][#].*[\n]       {}
 [a-zA-Z]([a-zA-Z]*|[_]*|[0-9]*)*     {
                 yylval.stringval=strdup(yytext); //cause yylval is overwritten when parser generates next token,we need to copy value instead of using yylval 
                 return ID;
