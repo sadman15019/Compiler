@@ -1,0 +1,52 @@
+cholok integer a;
+cholok integer b,c;
+fixed integer d;
+b<-100;
+a<-6 >?= 4 $add 2;
+c<-7;
+display(b);
+display(a);
+display(c);
+d<-3;
+d<-4;
+cholok fraction e;
+e<-4.5656;
+display(e);
+si(b>?100){}
+sinon si(c<?50 and d<?50){}
+sinon{}
+
+check e:
+  incase 4.5656:
+    {}
+   incase 4:
+    {}
+  others:
+    {}
+
+cholok integer sad1<-100, sad2<-200 ,sad3;
+
+display(sad1);
+display(sad2);
+display(sad3);
+
+cholok character abc;
+abc<-"mynameissadman";
+display(abc);
+
+
+
+loop i in 1 ....100{}
+loop i in 1 ..<?100{}
+loop i in 1000 ..>?100{}
+
+cholok integer i<-100,j<-200,k<-3;
+
+as_long_as(i<?j or j<?k){}
+
+cholok integer arr[100];
+arr[3]<-56;
+display(a,b,abc);
+
+
+
