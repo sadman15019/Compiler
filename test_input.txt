@@ -1,3 +1,11 @@
+import os;
+import numpy;
+func sum -> fraction (integer x,fraction y)
+{
+   cholok fraction ff;
+   range ff;
+}
+
 cholok integer a;
 cholok integer b,c;
 fixed integer d;
@@ -7,6 +15,7 @@ c<-7;
 display(b);
 display(a);
 display(c);
+a $add $add;
 d<-3;
 d<-4;
 cholok fraction e;
@@ -48,13 +57,13 @@ cholok integer arr[100];
 arr[3]<-56;
 display(a,b,abc);
 
-func sum -> fraction (integer x,fraction y)
-{
-   range e;
-}
 
 cholok fraction xx;
 a<-sum(a,e);  ##this is a function call
+
+b<-6 $add absolute (4 $sub 5) $mul 2;
+b<-6 $add max(4,5) $mul 2;
+display(b);
 
 
 

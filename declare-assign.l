@@ -5,6 +5,7 @@
 %}
 
 %%
+[i][m][p][o][r][t][ \t]*[a-zA-Z]+[;]     {}
 "integer"   {return INT ;}
 "fraction" {return FLOAT; }
 "character" {return CHAR;}
@@ -41,6 +42,9 @@
 "->"         {return FUNCRET;}
 "range"      {return RET;}
 "void"        {return VOID;}
+"absolute"   {return ABS;}
+"max"         {return MAX;}
+"min"         {return MIN;}
 [#][#].*[\n]       {}
 [a-zA-Z]([a-zA-Z]*|[_]*|[0-9]*)*     {
                 yylval.stringval=strdup(yytext); //cause yylval is overwritten when parser generates next token,we need to copy value instead of using yylval 

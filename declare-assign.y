@@ -110,11 +110,12 @@
 
 %error-verbose
 %start program
-%token INT FLOAT CHAR VARIABLE ID NUMBER PRINT ASSIGN POW SCAN VAR CONSTANT IF ELSEIF ELSE SWITCH CASE DEFAULT FOR IN WHILE FUNC FUNCRET RET VOID
+%token INCLUDE INT FLOAT CHAR VARIABLE ID NUMBER PRINT ASSIGN POW SCAN VAR CONSTANT IF ELSEIF ELSE SWITCH CASE DEFAULT FOR IN WHILE FUNC FUNCRET RET VOID 
 %left AND OR
 %left GTE GT LTE LT EQ
 %left ADD SUB
 %left MUL DIV MOD
+%left ABS MAX MIN
 
 
 %type<floatval>range decassignment case expression var_dec cons_dec assignment print scan TYPE INT FLOAT CHAR VARIABLE NUMBER PRINT ASSIGN POW SCAN VAR CONSTANT AND OR GTE GT LTE LT EQ  ADD SUB  MUL DIV MOD IF ELSEIF ELSE
@@ -134,6 +135,8 @@ program:
       |whileloop program
       |function program
       |funccall program
+      |increment program
+      |decrement program
       ;
 var_dec:VAR TYPE ID1 ';' {addtype(0,$2); addtypearr($2); }
        ;
@@ -334,7 +337,14 @@ expression:
         | expression LT expression     { $$ = $1<$3; }
         | expression EQ expression     { $$ = $1==$3; }
         | expression AND expression     { $$ = $1 && $3; }
-        | expression OR expression     { $$ = $1 || $3; }
+        | expression OR expression     { $$ = $1 || $3; }   
+        |ABS expression             {$$=abs((int)$2);}  
+        |MAX '(' expression ',' expression ')'  {int x=(int)$3; int y=(int)$5;
+                                                 if(x>=y){$$=x;}
+                                                 else  {$$=y;}}
+        |MIN '(' expression ',' expression ')'  {int x=(int)$3; int y=(int)$5;
+                                                 if(x<y){$$=x;}
+                                                 else  {$$=y;}}
         ;
 print:PRINT'('ID2')'';'  {}
 ID2:ID2 ',' ID           { int y=search($3);  
@@ -417,7 +427,9 @@ ID2:ID2 ',' ID           { int y=search($3);
                         }
 
             ;
-scan:SCAN '('ID')'';'  {
+scan:SCAN '('ID4')'';' {}
+         ;
+ID4:ID4 ',' ID  {
                            int y=search($3);  
                            if(y==0)
                            {
@@ -438,6 +450,31 @@ scan:SCAN '('ID')'';'  {
                            if(var[y].type==3)
                            {
                               printf("input for %s\n",$3);
+                              scanf("%s",&var[y].cval);
+                           }
+                           }
+                       }
+   |ID                  {
+                           int y=search($1);  
+                           if(y==0)
+                           {
+                              printf("variable is not declared\n");
+                           } 
+                           else
+                           {
+                           if(var[y].type==1)
+                           {
+                              printf("input for %s\n",$1);
+                              scanf("%d",&var[y].ival);
+                           }
+                           if(var[y].type==2)
+                           {
+                             printf("input for %s\n",$1);
+                             scanf("%f",&var[y].fval);
+                           }
+                           if(var[y].type==3)
+                           {
+                              printf("input for %s\n",$1);
                               scanf("%s",&var[y].cval);
                            }
                            }
@@ -500,7 +537,7 @@ function:FUNC ID FUNCRET TYPE{if(searchfunc($2)==0)
                  {
                     printf("function is already decalared\n");
                  }
-                func[cnt3].rettype=(int)$4; printf("%d\n",func[cnt3].rettype);} '(' funcparam ')' '{' program rretunrn program'}' {func[cnt3].totalparam=tempcnt; tempcnt=0;  cnt3++;}
+                func[cnt3].rettype=(int)$4;} '(' funcparam ')' '{' program rretunrn program'}' {func[cnt3].totalparam=tempcnt; tempcnt=0;  cnt3++;}
             ;
 funcparam:funcparam ',' TYPE ID { 
                         int x=(int)$3;
@@ -557,13 +594,13 @@ funccall:ID ASSIGN ID '(' ID3 ')' ';' {
                     int y=searchfunc($3);
                     if(y==0)
                     {
-                     printf("function is not declared");
+                     printf("function is not declared\n");
                     }
                     else
                     {
                         if(tempcnt<func[y].totalparam)
                         {
-                           printf("too few arguments");
+                           printf("too few arguments\n");
                         }
                         else
                         {
@@ -583,17 +620,17 @@ funccall:ID ASSIGN ID '(' ID3 ')' ';' {
                              {
                                if(func[y].rettype==var[z].type)
                                {
-                                  printf("fucntion called");
+                                  printf("fucntion called\n");
                                }
                                else
                                {
-                                 printf("variable and return type is not matched");
+                                 printf("variable and return type is not matched\n");
                                }
                              }
                            }
                            else
                            {
-                              printf("argument type is not matched");
+                              printf("argument type is not matched\n");
                            }
                         }
                     }
@@ -625,6 +662,54 @@ ID3:ID3 ',' ID {
                         }
                }
       ;
+increment:ID ADD ADD ';'{
+                       
+                       int y=search($1);
+                        if(y==0)
+                        {
+                             printf("variable is not declared\n");
+                        } 
+                        else
+                        {
+                           if(var[y].type==1)
+                           {
+                               var[y].ival=var[y].ival+1;
+                           }
+                           else if(var[y].type==2)
+                           {
+                              var[y].fval=var[y].fval+1;
+                           }
+                           else if(var[y].type==3)
+                           {
+                             printf("cannot increment sting\n");
+                           }
+                        }
+                     }
+            ;
+decrement:ID SUB SUB ';'  {
+                       
+                       int y=search($1);
+                        if(y==0)
+                        {
+                             printf("variable is not declared\n");
+                        } 
+                        else
+                        {
+                           if(var[y].type==1)
+                           {
+                               var[y].ival=var[y].ival-1;
+                           }
+                           else if(var[y].type==2)
+                           {
+                              var[y].fval=var[y].fval-1;
+                           }
+                           else if(var[y].type==3)
+                           {
+                             printf("cannot decrement sting\n");
+                           }
+                        }
+                     }
+         ;
 %%
 
 void yyerror(char *s) {
